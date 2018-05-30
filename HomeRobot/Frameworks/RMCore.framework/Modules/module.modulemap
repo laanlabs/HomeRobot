@@ -1,0 +1,6 @@
+framework module RMCore {
+  umbrella header "RMCore.h"
+
+  export *
+  module * { export * }
+}
