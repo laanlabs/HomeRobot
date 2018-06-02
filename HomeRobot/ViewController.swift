@@ -133,6 +133,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
     
     var driveView : TouchDriveView! = nil
     
+    let notSyncedMessage = "You must first sync positions. Create a map, and load the map on both robot and controller devices."
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -309,10 +311,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
     // MARK: - UI Actions
     @IBAction func botModeButtonTapped() {
         
-        
-        if self.botConnectionState != .wifi {
-            let msg = "No Bot connected. Make sure bots are on the same WiFi"
+        if self.botConnectionState == .disconnected {
+            
+            let msg = "No Bot connected. Make sure bot is plugged in and devices are on the same WiFi network."
             self.showAlert(msg)
+            
+        } else if self.botConnectionState == .plug {
+            // do nothing for robot mode
             return;
         }
         
@@ -324,7 +329,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
         }))
         
         alert.addAction(UIAlertAction(title:"Waypoint Mode", style: .default, handler: { action in
-            self.interactionState = .addWaypoints
+            
+            if self.areClientsSynced {
+                self.interactionState = .addWaypoints
+            } else {
+                
+                self.showAlert(self.notSyncedMessage)
+            }
+            
         }))
         
         
@@ -367,8 +379,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
         } else if self.interactionState == .addWaypoints {
             
             if !self.areClientsSynced {
-                let msg = "You must first sync positions. Create a map, and load the map on both robot and controller devices."
-                self.showAlert(msg)
+                self.showAlert(notSyncedMessage)
                 return;
             }
             
@@ -435,7 +446,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
                                                 message: msg,
                                                 preferredStyle: UIAlertControllerStyle.alert)
         
-        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
+        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
             (result : UIAlertAction) -> Void in
         }
         
@@ -1087,6 +1098,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
                 self.sendMarkerCommand(marker)
                 Thread.sleep(forTimeInterval: 0.15)
             }
+            self.pendingCommands.removeAll()
             
         }
         
