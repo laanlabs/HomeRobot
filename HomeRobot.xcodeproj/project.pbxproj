@@ -16,7 +16,6 @@
 		426F035B20C1FFC800A7E790 /* map-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 426F035A20C1FFC700A7E790 /* map-thumb.png */; };
 		426F036020C2170300A7E790 /* WifiServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035C20C2170300A7E790 /* WifiServiceManager.swift */; };
 		426F036120C2170300A7E790 /* ShapeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035D20C2170300A7E790 /* ShapeManager.swift */; };
-		426F036220C2170300A7E790 /* RobotCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035E20C2170300A7E790 /* RobotCommands.swift */; };
 		426F036320C2170300A7E790 /* ShapeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035F20C2170300A7E790 /* ShapeType.swift */; };
 		426F036520C22F9600A7E790 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036420C22F9600A7E790 /* ImageHelper.swift */; };
 		426F036A20C2384A00A7E790 /* SCNVector3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */; };
@@ -26,6 +25,13 @@
 		42DA4E4920BF40610063E106 /* Placenote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42DA4E4A20BF40610063E106 /* PlacenoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; };
 		42DA4E4B20BF40610063E106 /* PlacenoteSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		42F4B59B20C3148F0064C31A /* SCN+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F4B59A20C3148F0064C31A /* SCN+Codable.swift */; };
+		42F4B5A020C31A3B0064C31A /* RobotMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F4B59C20C314B40064C31A /* RobotMessages.swift */; };
+		42F4B5A420C327090064C31A /* bot-wifi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F4B5A120C327090064C31A /* bot-wifi@2x.png */; };
+		42F4B5A520C327090064C31A /* bot-plug@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F4B5A220C327090064C31A /* bot-plug@2x.png */; };
+		42F4B5A620C327090064C31A /* bot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F4B5A320C327090064C31A /* bot@2x.png */; };
+		42F4B5A820C338E70064C31A /* pin.scn in Resources */ = {isa = PBXBuildFile; fileRef = 42F4B5A720C338E70064C31A /* pin.scn */; };
+		42F4B5AA20C345D90064C31A /* TouchDriveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F4B5A920C345D90064C31A /* TouchDriveView.swift */; };
 		5314B20120BE97420024AAE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5314B20020BE97420024AAE3 /* AppDelegate.swift */; };
 		5314B20320BE97420024AAE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5314B20220BE97420024AAE3 /* ViewController.swift */; };
 		5314B20620BE97420024AAE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5314B20420BE97420024AAE3 /* Main.storyboard */; };
@@ -64,12 +70,18 @@
 		426F035A20C1FFC700A7E790 /* map-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-thumb.png"; sourceTree = "<group>"; };
 		426F035C20C2170300A7E790 /* WifiServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiServiceManager.swift; sourceTree = "<group>"; };
 		426F035D20C2170300A7E790 /* ShapeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeManager.swift; sourceTree = "<group>"; };
-		426F035E20C2170300A7E790 /* RobotCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotCommands.swift; sourceTree = "<group>"; };
 		426F035F20C2170300A7E790 /* ShapeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeType.swift; sourceTree = "<group>"; };
 		426F036420C22F9600A7E790 /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNVector3+Extensions.swift"; sourceTree = "<group>"; };
 		426F036820C2384A00A7E790 /* SKLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKLine.swift; sourceTree = "<group>"; };
 		426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNVector4+Extensions.swift"; sourceTree = "<group>"; };
+		42F4B59A20C3148F0064C31A /* SCN+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCN+Codable.swift"; sourceTree = "<group>"; };
+		42F4B59C20C314B40064C31A /* RobotMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotMessages.swift; sourceTree = "<group>"; };
+		42F4B5A120C327090064C31A /* bot-wifi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bot-wifi@2x.png"; sourceTree = "<group>"; };
+		42F4B5A220C327090064C31A /* bot-plug@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bot-plug@2x.png"; sourceTree = "<group>"; };
+		42F4B5A320C327090064C31A /* bot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bot@2x.png"; sourceTree = "<group>"; };
+		42F4B5A720C338E70064C31A /* pin.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = pin.scn; path = HomeRobot/pin.scn; sourceTree = SOURCE_ROOT; };
+		42F4B5A920C345D90064C31A /* TouchDriveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchDriveView.swift; sourceTree = "<group>"; };
 		5314B1FD20BE97420024AAE3 /* HomeRobot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeRobot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5314B20020BE97420024AAE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5314B20220BE97420024AAE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +118,10 @@
 		426F035920C1FFC700A7E790 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				42F4B5A720C338E70064C31A /* pin.scn */,
+				42F4B5A220C327090064C31A /* bot-plug@2x.png */,
+				42F4B5A120C327090064C31A /* bot-wifi@2x.png */,
+				42F4B5A320C327090064C31A /* bot@2x.png */,
 				426F035A20C1FFC700A7E790 /* map-thumb.png */,
 			);
 			path = Images;
@@ -114,6 +130,7 @@
 		426F036620C2384A00A7E790 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				42F4B59A20C3148F0064C31A /* SCN+Codable.swift */,
 				426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */,
 				426F036820C2384A00A7E790 /* SKLine.swift */,
 				426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */,
@@ -144,11 +161,12 @@
 				5314B20220BE97420024AAE3 /* ViewController.swift */,
 				426F035020C09BA300A7E790 /* ARCloud.swift */,
 				426F035220C09F6600A7E790 /* MapListController.swift */,
-				426F035E20C2170300A7E790 /* RobotCommands.swift */,
+				42F4B59C20C314B40064C31A /* RobotMessages.swift */,
 				426F035D20C2170300A7E790 /* ShapeManager.swift */,
 				426F035F20C2170300A7E790 /* ShapeType.swift */,
 				426F036420C22F9600A7E790 /* ImageHelper.swift */,
 				426F035C20C2170300A7E790 /* WifiServiceManager.swift */,
+				42F4B5A920C345D90064C31A /* TouchDriveView.swift */,
 				426F036620C2384A00A7E790 /* Utils */,
 				5314B20420BE97420024AAE3 /* Main.storyboard */,
 				5314B20720BE97430024AAE3 /* Assets.xcassets */,
@@ -234,9 +252,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42F4B5A820C338E70064C31A /* pin.scn in Resources */,
+				42F4B5A420C327090064C31A /* bot-wifi@2x.png in Resources */,
 				5314B20B20BE97430024AAE3 /* LaunchScreen.storyboard in Resources */,
 				5314B20820BE97430024AAE3 /* Assets.xcassets in Resources */,
 				5314B20620BE97420024AAE3 /* Main.storyboard in Resources */,
+				42F4B5A520C327090064C31A /* bot-plug@2x.png in Resources */,
+				42F4B5A620C327090064C31A /* bot@2x.png in Resources */,
 				426F035B20C1FFC800A7E790 /* map-thumb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -250,15 +272,17 @@
 			files = (
 				426F035320C09F6600A7E790 /* MapListController.swift in Sources */,
 				5314B20320BE97420024AAE3 /* ViewController.swift in Sources */,
+				42F4B59B20C3148F0064C31A /* SCN+Codable.swift in Sources */,
 				426F036520C22F9600A7E790 /* ImageHelper.swift in Sources */,
 				426F036020C2170300A7E790 /* WifiServiceManager.swift in Sources */,
-				426F036220C2170300A7E790 /* RobotCommands.swift in Sources */,
 				426F036120C2170300A7E790 /* ShapeManager.swift in Sources */,
 				426F036320C2170300A7E790 /* ShapeType.swift in Sources */,
+				42F4B5AA20C345D90064C31A /* TouchDriveView.swift in Sources */,
 				5314B20120BE97420024AAE3 /* AppDelegate.swift in Sources */,
 				426F036C20C2384A00A7E790 /* SCNVector4+Extensions.swift in Sources */,
 				426F035120C09BA300A7E790 /* ARCloud.swift in Sources */,
 				426F036A20C2384A00A7E790 /* SCNVector3+Extensions.swift in Sources */,
+				42F4B5A020C31A3B0064C31A /* RobotMessages.swift in Sources */,
 				426F036B20C2384A00A7E790 /* SKLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

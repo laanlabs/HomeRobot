@@ -15,18 +15,66 @@ extension UIColor {
     static var appleBlueColor = UIColor.init(red: 0, green: 120.0 / 255.0 , blue: 200.0 / 255.0, alpha: 1.0)
 }
 
+extension Date {
+    var secondsAgo : TimeInterval {
+        return -self.timeIntervalSinceNow
+    }
+    var millisecondsAgo : TimeInterval {
+        return -self.timeIntervalSinceNow * 1000.0
+    }
+}
+
+
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
-PNDelegate, CLLocationManagerDelegate, MapListDelegate {
+                        PNDelegate, CLLocationManagerDelegate, MapListDelegate,
+                        TouchDriveDelegate {
     
     
+    enum RobotConnectionState {
+        case disconnected
+        case wifi
+        case plug
+    }
     
-    enum InteractionState {
+    var botConnectionState : RobotConnectionState = .disconnected {
+        didSet {
+            if oldValue == botConnectionState { return; }
+            
+            if botConnectionState == .disconnected {
+                botModeButton.isUserInteractionEnabled = false
+                botModeButton.setBackgroundImage(UIImage.init(named: "bot.png"), for: .normal)
+            } else if botConnectionState == .wifi {
+                print(" >>> Connected WiFi")
+                botModeButton.isUserInteractionEnabled = true
+                botModeButton.setBackgroundImage(UIImage.init(named: "bot-wifi.png"), for: .normal)
+                
+            } else if botConnectionState == .plug {
+                botModeButton.isUserInteractionEnabled = true
+                botModeButton.setBackgroundImage(UIImage.init(named: "bot-plug.png"), for: .normal)
+            }
+        }
+    }
+    
+    enum BotInteractionState {
         case none
         case addShapes
         case addWaypoints
+        case drivingControls
     }
     
-    var interactionState : InteractionState = .none
+    var interactionState : BotInteractionState = .none {
+        didSet {
+            
+            if interactionState == .drivingControls {
+                self.showDrivingView()
+            }
+            else if oldValue == .drivingControls {
+                self.hideDrivingView()
+            } else if interactionState == .addWaypoints {
+                self.showStatus("Tap to add points")
+            }
+        }
+    }
     
     enum MappingState {
         case none
@@ -34,12 +82,24 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         case creatingMap
     }
     
-    var mappingState : MappingState = .none
+    var mappingState : MappingState = .none {
+        didSet {
+            // reset this if we leave .localizing
+            hasFoundMapOnce = false
+        }
+    }
+    
+    // TODO: map id to sync with remote partner?
+    //  not sure how placenote works exactly -- like status can still !running/lost but the sync seems fine
+    var hasFoundMapOnce = false
+    
+    
     var trackingStarted = false
     
     
     @IBOutlet var showMapListButton : UIButton! = nil 
     @IBOutlet var doneMappingButton : UIButton! = nil
+    @IBOutlet var botModeButton : UIButton! = nil
     @IBOutlet var statusLabel : UILabel! = nil
     @IBOutlet var robotStatusLabel : UILabel! = nil
     
@@ -58,7 +118,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     private var camManager: CameraManager? = nil
     
     
-    private var lastMapId : String! = nil
+    private var currentMapId : String! = nil
     private var lastScreenshot : UIImage! = nil
     
     
@@ -71,11 +131,13 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     var robot : RMCoreRobotRomo3! = nil
     
     
-    var driveView : UIView! = nil
+    var driveView : TouchDriveView! = nil
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        TestRobotMessages()
         
         sceneView = ARSCNView(frame: self.view.frame)
         
@@ -127,19 +189,10 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         sceneView.addGestureRecognizer(tapRecognizer)
 
         
-        
-        
-//        connectionsLabel = UILabel()
-//        connectionsLabel.textAlignment = .center
-//        connectionsLabel.frame = .init(x: 0, y: 0, width: 300, height: 40)
-//        connectionsLabel.center = .init(x: self.view.center.x, y: self.view.bounds.height - 200)
-//        connectionsLabel.textColor = UIColor.magenta
-//        self.view.addSubview(connectionsLabel)
-        
         wifiDevice = WifiServiceManager()
         wifiDevice.delegate = self
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+        DispatchQueuse.main.asyncAfter(deadline: .now() + 2.5, execute: {
             self.startPeerTimer()
         })
         
@@ -168,6 +221,15 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         sceneView.frame = view.bounds
+        
+        if let dv = self.driveView {
+            let size = dv.powerView.bounds.size.width
+            let h = self.view.bounds.size.height
+            let w = self.view.bounds.size.width
+            dv.powerView.center = CGPoint.init(x: size * 0.5, y: h - size * 0.55)
+            dv.steeringView.center = CGPoint.init(x: w - size * 0.5, y: h - size * 0.55)
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -226,6 +288,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         //creating new map, remove old shapes.
         shapeManager.clearShapes()
         
+        // Take a photo when new map is created for the thumbnail
         self.lastScreenshot = self.sceneView.snapshot()
         
     }
@@ -234,6 +297,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         
         self.showStatus("Map Loaded. Look Around" )
         self.mappingState = .localizing
+        self.currentMapId = map.mapId
         
         if (self.shapeManager.loadShapeArray(shapeArray: map.metadata["shapeArray"] as? [[String: [String: String]]])) {
             self.showStatus("Map Loaded. Look Around!" )
@@ -243,6 +307,45 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     
     
     // MARK: - UI Actions
+    @IBAction func botModeButtonTapped() {
+        
+        
+        if self.botConnectionState != .wifi { return; }
+        
+
+        let alert = UIAlertController(title: "", message: "Select Bot Mode", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title:"Drive Controls", style: .default, handler: { action in
+            self.interactionState = .drivingControls
+        }))
+        
+        alert.addAction(UIAlertAction(title:"Waypoint Mode", style: .default, handler: { action in
+            self.interactionState = .addWaypoints
+        }))
+        
+        
+        if (self.interactionState == .addWaypoints) && (self.pendingCommands.count > 0) {
+            
+            alert.addAction(UIAlertAction(title:"Send Waypoints", style: .default, handler: { action in
+                self.sendAllPendingMarkers(nil)
+            }))
+            
+        }
+        
+        
+        
+        alert.addAction(UIAlertAction(title:"Cancel", style: .cancel, handler: nil ))
+        
+        if let popoverPresentationController = alert.popoverPresentationController,
+            let view = self.botModeButton {
+            popoverPresentationController.sourceView = view
+            popoverPresentationController.sourceRect = view.bounds
+        }
+        
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         
@@ -256,7 +359,10 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
                 shapeManager.spawnRandomShape(position: pose.position())
                 self.lastScreenshot = self.sceneView.snapshot()
             }
-        } else if self.mappingState == .localizing {
+            
+        } else if self.mappingState == .localizing
+                    && self.interactionState == .addWaypoints
+                    && self.botConnectionState == .wifi  {
             
             // && self.robot.isRemotelyConnected or something
             //if lastPanMove.millisecondsAgo < 100.0 { return; }
@@ -326,7 +432,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
                 if let mapId = _mapId {
                     
                     self.showStatus("Saved map: " + mapId )
-                    self.lastMapId = mapId
+                    self.currentMapId = mapId
                     LibPlacenote.instance.stopSession()
                     
                     var metadata: [String: Any] = [:]
@@ -362,7 +468,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         },
             uploadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
                 if (completed) {
-                    self.showStatus("Upload complete: " + self.lastMapId )
+                    self.showStatus("Upload complete: " + self.currentMapId )
                 } else if (faulted) {
                     self.showStatus("Upload FAIL")
                 } else {
@@ -389,8 +495,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     
     func onStatusChange(_ prevStatus: LibPlacenote.MappingStatus, _ currStatus: LibPlacenote.MappingStatus) {
         
-        if prevStatus != LibPlacenote.MappingStatus.running && currStatus == LibPlacenote.MappingStatus.running { //just localized draw shapes you've retrieved
-            
+        if prevStatus != LibPlacenote.MappingStatus.running && currStatus == LibPlacenote.MappingStatus.running {
             
             //just localized redraw the shapes
             shapeManager.drawView(parent: scene.rootNode)
@@ -399,6 +504,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
                 self.showStatus("Tap anywhere to add Shapes")
             }
             else if self.mappingState == .localizing {
+                hasFoundMapOnce = true
                 self.showStatus("Map Found!")
             }
             
@@ -410,7 +516,8 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
             
         }
         
-        if prevStatus == LibPlacenote.MappingStatus.running && currStatus != LibPlacenote.MappingStatus.running { //just lost localization
+        if prevStatus == LibPlacenote.MappingStatus.running && currStatus != LibPlacenote.MappingStatus.running {
+            //just lost localization
             if self.mappingState == .creatingMap {
                 self.showStatus("Map Lost")
             }
@@ -493,7 +600,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         let pose: matrix_float4x4 = didUpdate.camera.transform
         
         if (!LibPlacenote.instance.initialized()) {
-            print("SDK is not initialized")
+            //print("SDK is not initialized")
             return
         }
         
@@ -556,7 +663,9 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     
     func sendMessage( _ message : RobotMessage ) {
         
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: message.toJson()) else { return; }
+        //guard let jsonData = try? JSONSerialization.data(withJSONObject: message.toJson()) else { return; }
+        
+        guard let jsonData = EncodeRobotMessage( message ) else { return; }
         
         if self.wifiDevice.session.connectedPeers.count > 0 {
             self.wifiDevice.sendData(jsonData)
@@ -587,11 +696,16 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         
         let _ = Timer.scheduledTimer(withTimeInterval: 1.0/15.0, repeats: true) { (_) in
             
+            //if !self.hasFoundMapOnce { return; }
+            
             guard let cam = self.sceneView.pointOfView else { return }
             
             let message = UpdateLocationMessage(location: cam.worldPosition,
                                                 transform: cam.worldTransform,
-                                                robotConnected: self.robot != nil)
+                                                robotConnected: (self.robot != nil),
+                                                currentMapId: self.currentMapId,
+                                                hasLocalized: self.hasFoundMapOnce)
+            
             
             self.sendMessage( message )
             
@@ -611,29 +725,40 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     // Update the node position and add dot trail as the robot moves
     func updatePeerNode( _ result : UpdateLocationMessage ) {
         
-        if peerNode == nil {
-            let ball = SCNPyramid(width: 0.06, height: 0.1, length: 0.06)
-            ball.firstMaterial?.diffuse.contents = UIColor.magenta
-            peerNode = SCNNode(geometry: ball)
-            peerNode.eulerAngles.x = Float.pi
-            self.scene.rootNode.addChildNode(peerNode)
+        let allGood = (result.currentMapId == self.currentMapId) && (self.hasFoundMapOnce) && result.hasLocalized
+        
+        // Only update position if both devices are localized on the same map
+        if allGood {
+            if peerNode == nil {
+                let ball = SCNPyramid(width: 0.06, height: 0.1, length: 0.06)
+                ball.firstMaterial?.diffuse.contents = UIColor.magenta
+                peerNode = SCNNode(geometry: ball)
+                peerNode.eulerAngles.x = Float.pi
+                self.scene.rootNode.addChildNode(peerNode)
+            }
+            
+            let posPN = SCNVector3( result.location.x,
+                                    result.location.y,
+                                    result.location.z )
+            
+            peerNode.transform = result.transform
+            addTrackingBall(posPN)
         }
         
-        let posPN = SCNVector3( result.location.x,
-                                result.location.y,
-                                result.location.z )
-        
-        peerNode.transform = result.transform
-        
-        if result.robotConnected {
-            self.robotStatusLabel.text = "Robot Wifi"
-        } else {
-            if self.robot == nil {
-                self.robotStatusLabel.text = ""
+        DispatchQueue.main.async {
+            
+            if result.robotConnected {
+                self.botConnectionState = .wifi
+                self.robotStatusLabel.text = "Robot Wifi"
+            } else {
+                if self.robot == nil {
+                    self.botConnectionState = .disconnected
+                    self.robotStatusLabel.text = "Robot Off"
+                }
             }
         }
         
-        addTrackingBall(posPN)
+        
         
     }
     
@@ -686,7 +811,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
     var driveQueue = DispatchQueue(label: "com.laan.driveQueue")
     
     func addDrivingPoint( _ marker : RobotMarker ) {
-        
+        self.showStatus("Waypoint: " + String(marker.flagId) )
         driveQueue.async {
             self.points.append(marker)
             
@@ -899,7 +1024,7 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         
     }
     
-    @objc func sendAllPendingMarkers( _ sender : Any ) {
+    @objc func sendAllPendingMarkers( _ sender : Any? ) {
         
         if let b = sender as? UIButton {
             
@@ -921,6 +1046,8 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         }
         
         DispatchQueue.global().async {
+            
+            self.showStatus("Sending " + String(self.pendingCommands.count) + " cmds" )
             
             for marker in self.pendingCommands {
                 self.sendMarkerCommand(marker)
@@ -977,8 +1104,60 @@ PNDelegate, CLLocationManagerDelegate, MapListDelegate {
         
     }
     
+    
+    // MARK: - Driving View
+    
+    func showDrivingView() {
+        
+        if self.driveView == nil {
+            driveView = TouchDriveView(size: 150)
+            driveView.delegate = self
+        }
+        
+        self.view.addSubview(driveView.powerView)
+        self.view.addSubview(driveView.steeringView)
+        
+    }
+    
+    func hideDrivingView() {
+        self.driveView?.powerView.removeFromSuperview()
+        self.driveView?.steeringView.removeFromSuperview()
+    }
+    
+    private var lastDriveMessage = Date()
+    
+    func valueChanged( steering : Float , power : Float ) {
+        
+        if self.botConnectionState == .wifi  {
+           // && lastDriveMessage.millisecondsAgo > 100.0
+        //lastDriveMessage = Date()
+        
+        var leftPower : Float = 0.0 // steering * power
+        var rightPower : Float = 0.0 // steering * power * -1.0
+        
+        if steering >= 0 {
+            
+            leftPower = 1.0
+            rightPower = 1.0 - 2.0 * steering
+            
+        } else {
+            rightPower = 1.0
+            leftPower = 1.0 + 2.0 * steering
+        }
+        
+        rightPower *= power
+        leftPower *= power
+        
+        self.sendMessage(DriveMotorMessage(leftMotorPower: leftPower, rightMotorPower: rightPower))
+        }
+        
+    }
+    
+    
 
 }
+
+
 
 // MARK: - WifiServiceManagerDelegate
 extension ViewController : WifiServiceManagerDelegate {
@@ -991,10 +1170,14 @@ extension ViewController : WifiServiceManagerDelegate {
                 s += ", "
             }
             self.connectionsLabel.text = "Wifi: " + s
+            
+            if connectedDevices.count == 0 && self.robot == nil {
+                self.botConnectionState = .disconnected
+            }
+            
         }
     }
     
-    //func colorChanged(manager: WifiServiceManager, colorString: String) {
     func gotData(manager: WifiServiceManager, data: Data) {
         self.processIncomingData(data)
     }
@@ -1008,11 +1191,13 @@ extension ViewController: RMCoreDelegate {
     func robotDidConnect(_ robot: RMCoreRobot!) {
         self.robot = robot as! RMCoreRobotRomo3
         self.robotStatusLabel.text = "Robot Connected!"
+        self.botConnectionState = .plug
     }
 
     func robotDidDisconnect(_ robot: RMCoreRobot!) {
         self.robot = nil
         self.robotStatusLabel.text = "Robot Disconnected"
+        self.botConnectionState = .disconnected
     }
 
 
