@@ -7,15 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		426F035120C09BA300A7E790 /* ARCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035020C09BA300A7E790 /* ARCloud.swift */; };
+		426F035320C09F6600A7E790 /* MapListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035220C09F6600A7E790 /* MapListController.swift */; };
+		426F035420C1F6C700A7E790 /* RMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3DC20BF37E600F993DB /* RMCore.framework */; };
+		426F035520C1F6C700A7E790 /* RMCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3DC20BF37E600F993DB /* RMCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		426F035720C1F70E00A7E790 /* RMShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426F035620C1F70E00A7E790 /* RMShared.framework */; };
+		426F035820C1F70E00A7E790 /* RMShared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 426F035620C1F70E00A7E790 /* RMShared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		426F035B20C1FFC800A7E790 /* map-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 426F035A20C1FFC700A7E790 /* map-thumb.png */; };
+		426F036020C2170300A7E790 /* WifiServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035C20C2170300A7E790 /* WifiServiceManager.swift */; };
+		426F036120C2170300A7E790 /* ShapeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035D20C2170300A7E790 /* ShapeManager.swift */; };
+		426F036220C2170300A7E790 /* RobotCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035E20C2170300A7E790 /* RobotCommands.swift */; };
+		426F036320C2170300A7E790 /* ShapeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F035F20C2170300A7E790 /* ShapeType.swift */; };
+		426F036520C22F9600A7E790 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036420C22F9600A7E790 /* ImageHelper.swift */; };
+		426F036A20C2384A00A7E790 /* SCNVector3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */; };
+		426F036B20C2384A00A7E790 /* SKLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036820C2384A00A7E790 /* SKLine.swift */; };
+		426F036C20C2384A00A7E790 /* SCNVector4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */; };
+		42DA4E4820BF40610063E106 /* Placenote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; };
+		42DA4E4920BF40610063E106 /* Placenote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		42DA4E4A20BF40610063E106 /* PlacenoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; };
+		42DA4E4B20BF40610063E106 /* PlacenoteSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5314B20120BE97420024AAE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5314B20020BE97420024AAE3 /* AppDelegate.swift */; };
 		5314B20320BE97420024AAE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5314B20220BE97420024AAE3 /* ViewController.swift */; };
 		5314B20620BE97420024AAE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5314B20420BE97420024AAE3 /* Main.storyboard */; };
 		5314B20820BE97430024AAE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5314B20720BE97430024AAE3 /* Assets.xcassets */; };
 		5314B20B20BE97430024AAE3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5314B20920BE97430024AAE3 /* LaunchScreen.storyboard */; };
-		53B7D49620BF349800715BB6 /* PlacenoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; };
-		53B7D49820BF34D000715BB6 /* PlacenoteSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		53B7D49B20BF352B00715BB6 /* Placenote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; };
-		53B7D49D20BF353000715BB6 /* Placenote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53C8D3D220BF366600F993DB /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */; };
 		53C8D3D420BF36BD00F993DB /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53C8D3D620BF36EB00F993DB /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3D520BF36EA00F993DB /* SocketRocket.framework */; };
@@ -30,10 +45,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				53B7D49D20BF353000715BB6 /* Placenote.framework in Embed Frameworks */,
+				426F035820C1F70E00A7E790 /* RMShared.framework in Embed Frameworks */,
 				53C8D3D420BF36BD00F993DB /* CocoaLumberjack.framework in Embed Frameworks */,
-				53B7D49820BF34D000715BB6 /* PlacenoteSDK.framework in Embed Frameworks */,
+				426F035520C1F6C700A7E790 /* RMCore.framework in Embed Frameworks */,
 				53C8D3D820BF36F700F993DB /* SocketRocket.framework in Embed Frameworks */,
+				42DA4E4920BF40610063E106 /* Placenote.framework in Embed Frameworks */,
+				42DA4E4B20BF40610063E106 /* PlacenoteSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,6 +58,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		426F035020C09BA300A7E790 /* ARCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCloud.swift; sourceTree = "<group>"; };
+		426F035220C09F6600A7E790 /* MapListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapListController.swift; sourceTree = "<group>"; };
+		426F035620C1F70E00A7E790 /* RMShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMShared.framework; sourceTree = "<group>"; };
+		426F035A20C1FFC700A7E790 /* map-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-thumb.png"; sourceTree = "<group>"; };
+		426F035C20C2170300A7E790 /* WifiServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WifiServiceManager.swift; sourceTree = "<group>"; };
+		426F035D20C2170300A7E790 /* ShapeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeManager.swift; sourceTree = "<group>"; };
+		426F035E20C2170300A7E790 /* RobotCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RobotCommands.swift; sourceTree = "<group>"; };
+		426F035F20C2170300A7E790 /* ShapeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeType.swift; sourceTree = "<group>"; };
+		426F036420C22F9600A7E790 /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
+		426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNVector3+Extensions.swift"; sourceTree = "<group>"; };
+		426F036820C2384A00A7E790 /* SKLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKLine.swift; sourceTree = "<group>"; };
+		426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SCNVector4+Extensions.swift"; sourceTree = "<group>"; };
 		5314B1FD20BE97420024AAE3 /* HomeRobot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeRobot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5314B20020BE97420024AAE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5314B20220BE97420024AAE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,7 +77,6 @@
 		5314B20720BE97430024AAE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5314B20A20BE97430024AAE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5314B20C20BE97430024AAE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		537D143420BF326600914636 /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Placenote.framework; path = /Users/wilperkins/Documents/Projects/LaanLabs/HomeRobot/PlacenoteSDK/Placenote.framework; sourceTree = "<absolute>"; };
 		53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = "<group>"; };
 		53B7D49A20BF352B00715BB6 /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Placenote.framework; sourceTree = "<group>"; };
 		53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
@@ -62,10 +90,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53B7D49B20BF352B00715BB6 /* Placenote.framework in Frameworks */,
 				53C8D3DD20BF37E600F993DB /* RMCore.framework in Frameworks */,
 				53C8D3D220BF366600F993DB /* CocoaLumberjack.framework in Frameworks */,
-				53B7D49620BF349800715BB6 /* PlacenoteSDK.framework in Frameworks */,
+				426F035720C1F70E00A7E790 /* RMShared.framework in Frameworks */,
+				42DA4E4820BF40610063E106 /* Placenote.framework in Frameworks */,
+				42DA4E4A20BF40610063E106 /* PlacenoteSDK.framework in Frameworks */,
+				426F035420C1F6C700A7E790 /* RMCore.framework in Frameworks */,
 				53C8D3D620BF36EB00F993DB /* SocketRocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,12 +103,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		426F035920C1FFC700A7E790 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				426F035A20C1FFC700A7E790 /* map-thumb.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		426F036620C2384A00A7E790 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */,
+				426F036820C2384A00A7E790 /* SKLine.swift */,
+				426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		5314B1F420BE97420024AAE3 = {
 			isa = PBXGroup;
 			children = (
 				5314B1FF20BE97420024AAE3 /* HomeRobot */,
 				5314B1FE20BE97420024AAE3 /* Products */,
-				53B7D49320BF340800715BB6 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,9 +142,18 @@
 			children = (
 				5314B20020BE97420024AAE3 /* AppDelegate.swift */,
 				5314B20220BE97420024AAE3 /* ViewController.swift */,
+				426F035020C09BA300A7E790 /* ARCloud.swift */,
+				426F035220C09F6600A7E790 /* MapListController.swift */,
+				426F035E20C2170300A7E790 /* RobotCommands.swift */,
+				426F035D20C2170300A7E790 /* ShapeManager.swift */,
+				426F035F20C2170300A7E790 /* ShapeType.swift */,
+				426F036420C22F9600A7E790 /* ImageHelper.swift */,
+				426F035C20C2170300A7E790 /* WifiServiceManager.swift */,
+				426F036620C2384A00A7E790 /* Utils */,
 				5314B20420BE97420024AAE3 /* Main.storyboard */,
 				5314B20720BE97430024AAE3 /* Assets.xcassets */,
 				5314B20920BE97430024AAE3 /* LaunchScreen.storyboard */,
+				426F035920C1FFC700A7E790 /* Images */,
 				5314B20C20BE97430024AAE3 /* Info.plist */,
 				53C8D3D920BF379800F993DB /* HomeRobot-Bridging-Header.h */,
 				53B7D49420BF349800715BB6 /* Frameworks */,
@@ -105,17 +161,10 @@
 			path = HomeRobot;
 			sourceTree = "<group>";
 		};
-		53B7D49320BF340800715BB6 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				537D143420BF326600914636 /* Placenote.framework */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		53B7D49420BF349800715BB6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				426F035620C1F70E00A7E790 /* RMShared.framework */,
 				53C8D3DC20BF37E600F993DB /* RMCore.framework */,
 				53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */,
 				53B7D49A20BF352B00715BB6 /* Placenote.framework */,
@@ -188,6 +237,7 @@
 				5314B20B20BE97430024AAE3 /* LaunchScreen.storyboard in Resources */,
 				5314B20820BE97430024AAE3 /* Assets.xcassets in Resources */,
 				5314B20620BE97420024AAE3 /* Main.storyboard in Resources */,
+				426F035B20C1FFC800A7E790 /* map-thumb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,8 +248,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426F035320C09F6600A7E790 /* MapListController.swift in Sources */,
 				5314B20320BE97420024AAE3 /* ViewController.swift in Sources */,
+				426F036520C22F9600A7E790 /* ImageHelper.swift in Sources */,
+				426F036020C2170300A7E790 /* WifiServiceManager.swift in Sources */,
+				426F036220C2170300A7E790 /* RobotCommands.swift in Sources */,
+				426F036120C2170300A7E790 /* ShapeManager.swift in Sources */,
+				426F036320C2170300A7E790 /* ShapeType.swift in Sources */,
 				5314B20120BE97420024AAE3 /* AppDelegate.swift in Sources */,
+				426F036C20C2384A00A7E790 /* SCNVector4+Extensions.swift in Sources */,
+				426F035120C09BA300A7E790 /* ARCloud.swift in Sources */,
+				426F036A20C2384A00A7E790 /* SCNVector3+Extensions.swift in Sources */,
+				426F036B20C2384A00A7E790 /* SKLine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +415,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/HomeRobot/Frameworks/PlacenoteSDK.framework/Headers/";
 				INFOPLIST_FILE = HomeRobot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -384,6 +445,7 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/HomeRobot/Frameworks/PlacenoteSDK.framework/Headers/";
 				INFOPLIST_FILE = HomeRobot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

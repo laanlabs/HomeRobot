@@ -34,12 +34,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>AR Stuff</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Geolocation for Places</string>
+	<key>UISupportedExternalAccessoryProtocols</key>
+	<array>
+		<string>com.romotive.romo</string>
 	</array>
 </dict>
 </plist>

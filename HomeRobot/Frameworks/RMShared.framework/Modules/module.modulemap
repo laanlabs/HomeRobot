@@ -1,0 +1,6 @@
+framework module RMShared {
+  umbrella header "RMShared.h"
+
+  export *
+  module * { export * }
+}
