@@ -192,7 +192,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
         wifiDevice = WifiServiceManager()
         wifiDevice.delegate = self
         
-        DispatchQueuse.main.asyncAfter(deadline: .now() + 2.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
             self.startPeerTimer()
         })
         
@@ -310,7 +310,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
     @IBAction func botModeButtonTapped() {
         
         
-        if self.botConnectionState != .wifi { return; }
+        if self.botConnectionState != .wifi {
+            let msg = "No Bot connected. Make sure bots are on the same WiFi"
+            self.showAlert(msg)
+            return;
+        }
         
 
         let alert = UIAlertController(title: "", message: "Select Bot Mode", preferredStyle: .actionSheet)
@@ -360,9 +364,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
                 self.lastScreenshot = self.sceneView.snapshot()
             }
             
-        } else if self.mappingState == .localizing
-                    && self.interactionState == .addWaypoints
-                    && self.botConnectionState == .wifi  {
+        } else if self.interactionState == .addWaypoints {
+            
+            if !self.areClientsSynced {
+                let msg = "You must first sync positions. Create a map, and load the map on both robot and controller devices."
+                self.showAlert(msg)
+                return;
+            }
             
             // && self.robot.isRemotelyConnected or something
             //if lastPanMove.millisecondsAgo < 100.0 { return; }
@@ -421,7 +429,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
         
     }
     
-    
+    func showAlert( _ msg : String, title : String = "Alert!") {
+        
+        let alertController = UIAlertController(title: title,
+                                                message: msg,
+                                                preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
+            (result : UIAlertAction) -> Void in
+        }
+        
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     
     @IBAction func doneMappingTapped() {
         
@@ -722,13 +744,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate,
         
     }
     
+    var lastStatusMessage : UpdateLocationMessage? = nil
+    var lastStatusDate : Date? = nil
+    var areClientsSynced : Bool {
+        get {
+            guard let d = self.lastStatusDate, let msg = self.lastStatusMessage else { return false; }
+            return (d.secondsAgo < 2.0 && msg.hasLocalized && self.hasFoundMapOnce && self.currentMapId == msg.currentMapId)
+        }
+    }
+    
     // Update the node position and add dot trail as the robot moves
     func updatePeerNode( _ result : UpdateLocationMessage ) {
         
-        let allGood = (result.currentMapId == self.currentMapId) && (self.hasFoundMapOnce) && result.hasLocalized
+        lastStatusDate = Date()
+        lastStatusMessage = result
+        
+        //let allGood = (result.currentMapId == self.currentMapId) && (self.hasFoundMapOnce) && result.hasLocalized
         
         // Only update position if both devices are localized on the same map
-        if allGood {
+        if self.areClientsSynced {
             if peerNode == nil {
                 let ball = SCNPyramid(width: 0.06, height: 0.1, length: 0.06)
                 ball.firstMaterial?.diffuse.contents = UIColor.magenta
