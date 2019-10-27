@@ -21,10 +21,6 @@
 		426F036A20C2384A00A7E790 /* SCNVector3+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036720C2384A00A7E790 /* SCNVector3+Extensions.swift */; };
 		426F036B20C2384A00A7E790 /* SKLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036820C2384A00A7E790 /* SKLine.swift */; };
 		426F036C20C2384A00A7E790 /* SCNVector4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426F036920C2384A00A7E790 /* SCNVector4+Extensions.swift */; };
-		42DA4E4820BF40610063E106 /* Placenote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; };
-		42DA4E4920BF40610063E106 /* Placenote.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49A20BF352B00715BB6 /* Placenote.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		42DA4E4A20BF40610063E106 /* PlacenoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; };
-		42DA4E4B20BF40610063E106 /* PlacenoteSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		42F4B59B20C3148F0064C31A /* SCN+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F4B59A20C3148F0064C31A /* SCN+Codable.swift */; };
 		42F4B5A020C31A3B0064C31A /* RobotMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F4B59C20C314B40064C31A /* RobotMessages.swift */; };
 		42F4B5A420C327090064C31A /* bot-wifi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F4B5A120C327090064C31A /* bot-wifi@2x.png */; };
@@ -42,6 +38,9 @@
 		53C8D3D620BF36EB00F993DB /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3D520BF36EA00F993DB /* SocketRocket.framework */; };
 		53C8D3D820BF36F700F993DB /* SocketRocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3D520BF36EA00F993DB /* SocketRocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53C8D3DD20BF37E600F993DB /* RMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53C8D3DC20BF37E600F993DB /* RMCore.framework */; };
+		CF6D9B992365F49D00B6CD42 /* SnapshotAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6D9B982365F49D00B6CD42 /* SnapshotAnchor.swift */; };
+		CF6D9B9B2365F4A200B6CD42 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6D9B9A2365F4A200B6CD42 /* Map.swift */; };
+		CF6D9B9D2365F4A900B6CD42 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6D9B9C2365F4A900B6CD42 /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,8 +54,6 @@
 				53C8D3D420BF36BD00F993DB /* CocoaLumberjack.framework in Embed Frameworks */,
 				426F035520C1F6C700A7E790 /* RMCore.framework in Embed Frameworks */,
 				53C8D3D820BF36F700F993DB /* SocketRocket.framework in Embed Frameworks */,
-				42DA4E4920BF40610063E106 /* Placenote.framework in Embed Frameworks */,
-				42DA4E4B20BF40610063E106 /* PlacenoteSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,12 +86,13 @@
 		5314B20720BE97430024AAE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5314B20A20BE97430024AAE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5314B20C20BE97430024AAE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PlacenoteSDK.framework; sourceTree = "<group>"; };
-		53B7D49A20BF352B00715BB6 /* Placenote.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Placenote.framework; sourceTree = "<group>"; };
 		53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
 		53C8D3D520BF36EA00F993DB /* SocketRocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketRocket.framework; sourceTree = "<group>"; };
 		53C8D3D920BF379800F993DB /* HomeRobot-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HomeRobot-Bridging-Header.h"; sourceTree = "<group>"; };
 		53C8D3DC20BF37E600F993DB /* RMCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RMCore.framework; sourceTree = "<group>"; };
+		CF6D9B982365F49D00B6CD42 /* SnapshotAnchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotAnchor.swift; sourceTree = "<group>"; };
+		CF6D9B9A2365F4A200B6CD42 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		CF6D9B9C2365F4A900B6CD42 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +103,6 @@
 				53C8D3DD20BF37E600F993DB /* RMCore.framework in Frameworks */,
 				53C8D3D220BF366600F993DB /* CocoaLumberjack.framework in Frameworks */,
 				426F035720C1F70E00A7E790 /* RMShared.framework in Frameworks */,
-				42DA4E4820BF40610063E106 /* Placenote.framework in Frameworks */,
-				42DA4E4A20BF40610063E106 /* PlacenoteSDK.framework in Frameworks */,
 				426F035420C1F6C700A7E790 /* RMCore.framework in Frameworks */,
 				53C8D3D620BF36EB00F993DB /* SocketRocket.framework in Frameworks */,
 			);
@@ -161,11 +157,14 @@
 				5314B20220BE97420024AAE3 /* ViewController.swift */,
 				426F035020C09BA300A7E790 /* ARCloud.swift */,
 				426F035220C09F6600A7E790 /* MapListController.swift */,
+				CF6D9B982365F49D00B6CD42 /* SnapshotAnchor.swift */,
+				CF6D9B9A2365F4A200B6CD42 /* Map.swift */,
 				42F4B59C20C314B40064C31A /* RobotMessages.swift */,
 				426F035D20C2170300A7E790 /* ShapeManager.swift */,
 				426F035F20C2170300A7E790 /* ShapeType.swift */,
 				426F036420C22F9600A7E790 /* ImageHelper.swift */,
 				426F035C20C2170300A7E790 /* WifiServiceManager.swift */,
+				CF6D9B9C2365F4A900B6CD42 /* Utilities.swift */,
 				42F4B5A920C345D90064C31A /* TouchDriveView.swift */,
 				426F036620C2384A00A7E790 /* Utils */,
 				5314B20420BE97420024AAE3 /* Main.storyboard */,
@@ -185,8 +184,6 @@
 				426F035620C1F70E00A7E790 /* RMShared.framework */,
 				53C8D3DC20BF37E600F993DB /* RMCore.framework */,
 				53C8D3D120BF366600F993DB /* CocoaLumberjack.framework */,
-				53B7D49A20BF352B00715BB6 /* Placenote.framework */,
-				53B7D49520BF349800715BB6 /* PlacenoteSDK.framework */,
 				53C8D3D520BF36EA00F993DB /* SocketRocket.framework */,
 			);
 			path = Frameworks;
@@ -271,6 +268,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				426F035320C09F6600A7E790 /* MapListController.swift in Sources */,
+				CF6D9B992365F49D00B6CD42 /* SnapshotAnchor.swift in Sources */,
+				CF6D9B9B2365F4A200B6CD42 /* Map.swift in Sources */,
 				5314B20320BE97420024AAE3 /* ViewController.swift in Sources */,
 				42F4B59B20C3148F0064C31A /* SCN+Codable.swift in Sources */,
 				426F036520C22F9600A7E790 /* ImageHelper.swift in Sources */,
@@ -278,6 +277,7 @@
 				426F036120C2170300A7E790 /* ShapeManager.swift in Sources */,
 				426F036320C2170300A7E790 /* ShapeType.swift in Sources */,
 				42F4B5AA20C345D90064C31A /* TouchDriveView.swift in Sources */,
+				CF6D9B9D2365F4A900B6CD42 /* Utilities.swift in Sources */,
 				5314B20120BE97420024AAE3 /* AppDelegate.swift in Sources */,
 				426F036C20C2384A00A7E790 /* SCNVector4+Extensions.swift in Sources */,
 				426F035120C09BA300A7E790 /* ARCloud.swift in Sources */,
@@ -428,8 +428,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 34FWY7G2HB;
+				DEVELOPMENT_TEAM = 44FZM7794V;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,16 +440,17 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/HomeRobot/Frameworks/PlacenoteSDK.framework/Headers/";
 				INFOPLIST_FILE = HomeRobot/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.laan.labs.HomeRobot;
+				PRODUCT_BUNDLE_IDENTIFIER = com.laan.labs.HomeRobott;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HomeRobot/HomeRobot-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -458,8 +460,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 34FWY7G2HB;
+				DEVELOPMENT_TEAM = 44FZM7794V;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -469,15 +472,16 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/HomeRobot/Frameworks/PlacenoteSDK.framework/Headers/";
 				INFOPLIST_FILE = HomeRobot/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.laan.labs.HomeRobot;
+				PRODUCT_BUNDLE_IDENTIFIER = com.laan.labs.HomeRobott;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HomeRobot/HomeRobot-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

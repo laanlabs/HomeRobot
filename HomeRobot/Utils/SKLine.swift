@@ -14,31 +14,29 @@ import SceneKit
  */
 
 @available(iOS 11.0, *)
-class SKLine : SCNNode {
-    
+class SKLine: SCNNode {
     private var _startPos = SCNVector3Zero
     private var _endPos = SCNVector3Zero
-    
-    var capsule : SCNCapsule! = nil
-    var capsuleNode : SCNNode! = nil
+
+    var capsule: SCNCapsule!
+    var capsuleNode: SCNNode!
     private var _color = UIColor.white
-    
-    init(radius : Float = 0.01, color: UIColor = .white) {
+
+    init(radius: Float = 0.01, color: UIColor = .white) {
         super.init()
-        
-        self.capsule = SCNCapsule(capRadius: CGFloat(radius), height: 1.0)
-        
+
+        capsule = SCNCapsule(capRadius: CGFloat(radius), height: 1.0)
+
         capsule.capSegmentCount = 10 // default 24
         capsule.radialSegmentCount = 10 // default 48
         capsule.heightSegmentCount = 1 // default = 1
-        
-        capsuleNode = SCNNode(geometry: self.capsule)
+
+        capsuleNode = SCNNode(geometry: capsule)
         capsuleNode.eulerAngles.x = Float.pi * 0.5
         capsule.firstMaterial?.lightingModel = .constant
-        
-        self.addChildNode(capsuleNode)
-        self.color = color
 
+        addChildNode(capsuleNode)
+        self.color = color
     }
 
     convenience init(radius: Float = 0.01, color: UIColor = .white, start: SCNVector3, end: SCNVector3) {
@@ -47,10 +45,10 @@ class SKLine : SCNNode {
         endPos = end
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     var color: UIColor {
         get {
             return _color
@@ -60,24 +58,24 @@ class SKLine : SCNNode {
             capsuleNode.geometry?.firstMaterial?.diffuse.contents = _color
         }
     }
-    
+
     var startPos: SCNVector3 {
         get {
             return _startPos
         }
         set {
             _startPos = newValue
-            self.update()
+            update()
         }
     }
-    
+
     var endPos: SCNVector3 {
         get {
             return _endPos
         }
         set {
             _endPos = newValue
-            self.update()
+            update()
         }
     }
 
@@ -86,21 +84,16 @@ class SKLine : SCNNode {
     }
 
     private func update() {
+        let p1 = startPos
+        let p2 = endPos
 
-        let p1 = self.startPos
-        let p2 = self.endPos
-    
-        let origin = (p1 + p2 ) / 2.0
+        let origin = (p1 + p2) / 2.0
         let len = (p1 - p2).length()
-        
+
         capsule.height = CGFloat(len)
-        //self.position = origin
-        self.worldPosition = origin
-        
-        self.look(at: p2)
+        // self.position = origin
+        worldPosition = origin
 
+        look(at: p2)
     }
-
-
 }
-
