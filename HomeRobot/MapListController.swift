@@ -6,22 +6,17 @@
 //  Copyright © 2018 Laan Labs. All rights reserved.
 //
 
+import ARKit
 import UIKit
-import Placenote
-import PlacenoteSDK
-
-
 protocol MapListDelegate {
     func newMapTapped()
-    func mapLoaded(map: MapListController.Map)
+    func mapLoaded(map: Map)
 }
 
-class MapController : UINavigationController, UIPopoverPresentationControllerDelegate {
-    
+class MapController: UINavigationController, UIPopoverPresentationControllerDelegate {
     let mapListController = MapListController()
-    
-    
-    var mapDelegate : MapListDelegate? {
+
+    var mapDelegate: MapListDelegate? {
         set {
             self.mapListController.mapDelegate = newValue
         }
@@ -29,42 +24,33 @@ class MapController : UINavigationController, UIPopoverPresentationControllerDel
             return self.mapListController.mapDelegate
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.preferredContentSize = CGSize(width: 300, height: 300)
-        
-        
-        self.pushViewController(mapListController, animated: false)
-        
-        self.setToolbarHidden(false, animated: false)
-        
+
+        preferredContentSize = CGSize(width: 300, height: 300)
+
+        pushViewController(mapListController, animated: false)
+
+        setToolbarHidden(false, animated: false)
     }
-    
+
     // MARK: UIPopoverPresentationControllerDelegate
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+
+    func adaptivePresentationStyle(for _: UIPresentationController, traitCollection _: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
-    
 }
 
 class MapListController: UITableViewController {
-    
-    class Map {
-        var mapId : String = ""
-        var metadata : [String: Any] = [:]
-        var image : UIImage? = nil
-    }
-    
-    var mapDelegate : MapListDelegate? = nil
-    
-    var maps : [Map] = []
+    var mapDelegate: MapListDelegate?
+
+    var maps: [Map] = []
     let MapCellIdentifier = "MapCellIdentifier"
-    let mapThumb = UIImage.init(named: "map-thumb.png")
-    
-    let spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-    
+    let mapThumb = UIImage(named: "map-thumb.png")
+
+    let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
+
     var loading = false {
         didSet {
             if loading {
@@ -82,194 +68,165 @@ class MapListController: UITableViewController {
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.preferredContentSize = CGSize(width: 300, height: 300)
-        
+
+        // self.preferredContentSize = CGSize(width: 300, height: 300)
+
         tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: MapCellIdentifier)
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
+
         let button = UIBarButtonItem(title: "New Map", style: .plain, target: self, action: #selector(addMapTapped))
         let close = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(closeTapped))
-        
-        self.setToolbarItems( [button, spacer, close] , animated: false )
-        
-        self.hidesBottomBarWhenPushed = false
-        
-        self.navigationItem.title = "Maps"
-        
+
+        setToolbarItems([button, spacer, close], animated: false)
+
+        hidesBottomBarWhenPushed = false
+
+        navigationItem.title = "Maps"
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
+
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
-        //self.navigationItem.leftBarButtonItem = button
-        
+        navigationItem.rightBarButtonItem = editButtonItem
+        // self.navigationItem.leftBarButtonItem = button
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.loadMaps()
         }
-        
-        
     }
-    
-    // MARK: - Maps
+
+    // MARK: - Maps Loading
+
+    func mapLoadURL(_ key: String) -> URL {
+        do {
+            return try FileManager.default
+                .url(for: .documentDirectory,
+                     in: .userDomainMask,
+                     appropriateFor: nil,
+                     create: true)
+                .appendingPathComponent(key)
+        } catch {
+            fatalError("Can't get file save URL: \(error.localizedDescription)")
+        }
+    }
+
     private func loadMaps() {
-        
-        self.loading = true
-        LibPlacenote.instance.fetchMapList(listCb: onMapList)
-        
-    }
-    
-    private func onMapList(success: Bool, mapList: [String: Any]) -> Void {
-        
-        self.loading = false
-        
+        loading = true
+
         maps.removeAll()
-        
-        if (!success) {
-            print ("failed to fetch map list")
-            //statusLabel.text = "Map List not retrieved"
-            self.tableView.reloadData()
-            return
-        }
-        
-        for place in mapList {
-            
-            //maps.append((place.key, place.value as? [String: Any]))
-            
-            let map = Map()
-            map.mapId = place.key
-            map.image = mapThumb
-            
-            maps.append( map )
-            
-            print(" map: ", map.mapId )
-            
-            
-            
-            if let meta = place.value as? [String:Any] {
-                
-                map.metadata = meta
-                
-                if let imageString = meta["image"] as? String {
-                    if let imageData = Data.init(base64Encoded: imageString) {
-                        let image = UIImage.init(data: imageData)
-                        map.image = image
-                    }
-                    
-                    
-                }
-                
-                for k in meta {
-                    print("map key: ", k.key )
-                }
-                
+
+        guard let maps = UserDefaults.standard.array(forKey: "map")
+            as? [String] else { return }
+
+        print(maps)
+
+        self.maps = maps.map({ (url) -> Map in
+
+            let _map = Map()
+
+            /// - Tag: ReadWorldMap
+            let worldMap: ARWorldMap = {
+                guard let data = try? Data(contentsOf: mapLoadURL(url))
+                else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+                return decotMap(data)
+            }()
+
+            // Display the snapshot image stored in the world map to aid user in relocalizing.
+            if let snapshotData = worldMap.snapshotAnchor?.imageData,
+                let snapshot = UIImage(data: snapshotData) {
+                _map.image = snapshot
+            } else {
+                print("No snapshot image in world map")
             }
-            
-            
-        }
-        
-        self.tableView.reloadData()
-        
-        
+
+            worldMap.anchors.removeAll(where: { $0 is SnapshotAnchor })
+
+            _map.worldMap = worldMap
+
+            _map.mapId = url
+
+            return _map
+        })
+        loading = false
+        tableView.reloadData()
     }
-    
-    
+
     @objc func addMapTapped() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
-        self.mapDelegate?.newMapTapped()
+        navigationController?.dismiss(animated: true, completion: nil)
+        mapDelegate?.newMapTapped()
     }
-    
+
     @objc func closeTapped() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
-    
-    func showStatus( _ text : String ) {
+
+    func showStatus(_ text: String) {
         print(text)
-        //self.statusLabel.text = text
+        // self.statusLabel.text = text
     }
-    
+
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in _: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.maps.count
+        return maps.count
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: MapCellIdentifier, for: indexPath)
-        
-        let map = self.maps[indexPath.row]
+
+        let map = maps[indexPath.row]
         cell.textLabel?.text = map.mapId
         cell.detailTextLabel?.text = "A map"
         cell.imageView?.image = map.image
 
         return cell
-        
     }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+    override func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
         return 70
     }
-    
-    //Make rows editable for deletion
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+
+    // Make rows editable for deletion
+    override func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
         return true
     }
-    
-    //Delete Row and its corresponding map
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
-            
-            LibPlacenote.instance.deleteMap(mapId: maps[indexPath.row].mapId, deletedCb: {(deleted: Bool) -> Void in
-                if (deleted) {
-                    
-                    self.showStatus("Deleting: " + self.maps[indexPath.row].mapId)
-                    self.maps.remove(at: indexPath.row)
-                    //self.tableView.reloadData()
-                    self.tableView.deleteRows(at: [indexPath], with: .fade)
-                    
-                }
-                else {
-                    
-                    self.showStatus("Can't Delete: " + self.maps[indexPath.row].mapId )
-                    
-                }
-            })
+
+    // Delete Row and its corresponding map
+    override func tableView(_: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+
+            guard let url = directory?.appendingPathComponent(self.maps[indexPath.row].mapId) else { return }
+
+            try? FileManager.default.removeItem(at: url)
+            showStatus("Deleting: " + maps[indexPath.row].mapId)
+            let list = maps.map({ $0.mapId }).filter({ $0 != maps[indexPath.row].mapId })
+
+            maps.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            UserDefaults.standard.set(list, forKey: "map")
         }
     }
-    
-    //Map selected
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        self.loading = true
-        
+
+    // Map selected
+    override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        loading = true
+
         let map = maps[indexPath.row]
-        self.showStatus( " Downloading map: " + map.mapId )
-        
-        LibPlacenote.instance.loadMap(mapId: map.mapId,
-                                      downloadProgressCb: {(completed: Bool, faulted: Bool, percentage: Float) -> Void in
-                                        
-            if (completed) {
-                self.loading = false
-                LibPlacenote.instance.startSession()
-                self.dismiss(animated: true, completion: nil)
-                self.mapDelegate?.mapLoaded(map: map)
-            }
-                                        
-        })
-        
+        showStatus("loading map: " + map.mapId)
+
+        loading = false
+
+        dismiss(animated: true, completion: nil)
+        mapDelegate?.mapLoaded(map: map)
     }
-
-    
-
 }

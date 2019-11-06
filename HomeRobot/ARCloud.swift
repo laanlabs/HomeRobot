@@ -7,55 +7,42 @@
 //
 
 import Foundation
+import SceneKit
 
-
-/*protocol ARCloudManager {
-    func startWithSceneView()
-    func showMapPicker()
-}*/
+/* protocol ARCloudManager {
+ func startWithSceneView()
+ func showMapPicker()
+ } */
 
 /*
  What does this manage?
- 
+
  - Load an existing map
  - Create a new map
  -
- 
+
  */
 
 protocol ARCloudDelegate {
-    
     func mapLoaded()
-    
+
     // Init, Done, Uploading, Saved
     func mapCreationStatusChanged()
-    
-    
 }
 
 class ARCloudManager {
-    
-    
-    
-    func startWithSceneView() {
-        
-    }
-    
+    func startWithSceneView() {}
+
     // Present as pop-over?
-    func showMapPicker() {
-        
-    }
-    
-    
+    func showMapPicker() {}
+
     // MARK: - Position conversion ARKit -> Map
-    
-    
-    func convertToMap( position : SCNVector3 ) -> SCNVector3? {
+
+    func convertToMap(position _: SCNVector3) -> SCNVector3? {
         return nil
     }
-    
-    func convertFromMap( position : SCNVector3 ) -> SCNVector3? {
+
+    func convertFromMap(position _: SCNVector3) -> SCNVector3? {
         return nil
     }
-    
 }
